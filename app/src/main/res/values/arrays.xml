@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="language_names">
+        <item>@string/lang_simplified</item>
+        <item>@string/lang_traditional</item>
+    </array>
+    <array name="language_codes">
+        <item>@string/code_simplified</item>
+        <item>@string/code_traditional</item>
+    </array>
+</resources>
