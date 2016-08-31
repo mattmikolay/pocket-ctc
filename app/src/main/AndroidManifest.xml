@@ -19,7 +19,8 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".TranslateActivity" />
+            android:parentActivityName=".TranslateActivity"
+            android:label="@string/title_settings"/>
 
     </application>
 
