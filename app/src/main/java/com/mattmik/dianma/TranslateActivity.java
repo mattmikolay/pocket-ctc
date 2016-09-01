@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,11 +18,16 @@ import android.widget.TextView;
 
 public class TranslateActivity extends AppCompatActivity {
 
+    public static final String TAG = "TranslateActivity";
+
     public static final int MSG_REQUEST_TRANSLATION = 1;
     public static final int MSG_TRANSLATE_SUCCESS = 2;
 
     private static final int UPDATE_DELAY = 200;
 
+    private static final String STATE_INPUT_TEXT = "inputText";
+
+    private EditText mInputText;
     private TextView mOutputText;
     private Handler mHandler;
     private TranslatorThread mTranslator;
@@ -64,8 +70,8 @@ public class TranslateActivity extends AppCompatActivity {
 
         // Add a TextWatcher to this Activity's main EditText, allowing us to detect when the user
         // stops typing
-        EditText inputText = (EditText) findViewById(R.id.txt_input);
-        inputText.addTextChangedListener(mInputWatcher);
+        mInputText = (EditText) findViewById(R.id.txt_input);
+        mInputText.addTextChangedListener(mInputWatcher);
 
         mOutputText = (TextView) findViewById(R.id.txt_output);
 
@@ -101,6 +107,30 @@ public class TranslateActivity extends AppCompatActivity {
         // Start the TranslatorThread to perform translation in the background
         mTranslator = new TranslatorThread(mHandler);
         mTranslator.start();
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Log.d(TAG, "Restoring text saved from activity recreation.");
+
+        // Restore the user-specified text. Translation will be triggered by the registered
+        // TextWatcher.
+        String savedText = savedInstanceState.getString(STATE_INPUT_TEXT, "");
+        mInputText.setText(savedText);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        // Save input text specified by user
+        savedInstanceState.putString(STATE_INPUT_TEXT, mInputText.getText().toString());
+
+        super.onSaveInstanceState(savedInstanceState);
 
     }
 
