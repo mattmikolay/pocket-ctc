@@ -31,9 +31,8 @@ public class CodeDictionary {
     private boolean mIsSimplifiedLoaded;
     private boolean mIsTraditionalLoaded;
 
-    // Codepoint is key, CTC code is value
-    private Map<Integer, Integer> mSimplifiedToTelegraph;
-    private Map<Integer, Integer> mTraditionalToTelegraph;
+    private CodeMap mSimplifiedMap;
+    private CodeMap mTraditionalMap;
 
     public CodeDictionary(Resources resources) {
 
@@ -42,8 +41,8 @@ public class CodeDictionary {
         mIsSimplifiedLoaded = false;
         mIsTraditionalLoaded = false;
 
-        mSimplifiedToTelegraph = new HashMap<>(9000);
-        mTraditionalToTelegraph = new HashMap<>(9000);
+        mSimplifiedMap = new CodeMap();
+        mTraditionalMap = new CodeMap();
 
     }
 
@@ -64,36 +63,65 @@ public class CodeDictionary {
     }
 
     /**
-     * Converts the given Chinese character codepoint into the corresponding telegraph code. For
-     * example, an input of 0x56FD will yield 948.
-     * @param code a valid Chinese character codepoint
-     * @return the corresponding telegraph code
+     * Converts the given simplified Chinese character codepoint into the corresponding telegraph
+     * code. For example, an input of 0x56FD will yield 948.
+     * @param code a valid simplified Chinese character codepoint
+     * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
-    public int hanToTelegraph(int code) {
-        // TODO Code me!
-        return 0;
+    public int simplifiedToTelegraph(int code) {
+
+        if(!mIsSimplifiedLoaded)
+            throw new IllegalStateException("Simplified dictionary has not been loaded.");
+
+        return mSimplifiedMap.hanToTelegraph(code);
+
+    }
+
+    /**
+     * Converts the given traditional Chinese character codepoint into the corresponding telegraph
+     * code. For example, an input of 0x56FD will yield 948.
+     * @param code a valid traditional Chinese character codepoint
+     * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
+     */
+    public int traditionalToTelegraph(int code) {
+
+        if(!mIsTraditionalLoaded)
+            throw new IllegalStateException("Traditional dictionary has not been loaded.");
+
+        return mTraditionalMap.hanToTelegraph(code);
+
     }
 
     /**
      * Converts the given telegraph code into the corresponding simplified Chinese character
      * codepoint. For example, an input of 948 will yield 0x56FD.
      * @param code a valid Chinese telegraph code
-     * @return the corresponding simplified Chinese character codepoint
+     * @return the corresponding simplified Chinese character codepoint, or null if no
+     *         corresponding codepoint is found
      */
-    public int telegraphToSimplified(int code) {
-        // TODO Code me!
-        return 0;
+    public Integer telegraphToSimplified(int code) {
+
+        if(!mIsSimplifiedLoaded)
+            throw new IllegalStateException("Simplified dictionary has not been loaded.");
+
+        return mSimplifiedMap.telegraphToHan(code);
+
     }
 
     /**
      * Converts the given telegraph code into the corresponding traditional Chinese character
      * codepoint. For example, an input of 948 will yield 0x570B.
      * @param code a valid Chinese telegraph code
-     * @return the corresponding traditional Chinese character codepoint
+     * @return the corresponding traditional Chinese character codepoint, or null if no
+     *         corresponding codepoint is found
      */
-    public int telegraphToTraditional(int code) {
-        // TODO Code me!
-        return 0;
+    public Integer telegraphToTraditional(int code) {
+
+        if(!mIsTraditionalLoaded)
+            throw new IllegalStateException("Traditional dictionary has not been loaded.");
+
+        return mTraditionalMap.telegraphToHan(code);
+
     }
 
     /**
@@ -122,7 +150,7 @@ public class CodeDictionary {
                 Integer codePoint = parseUnicodeCodepoint(tokens[0]);
                 Integer ctcCode = Integer.valueOf(tokens[1]);
 
-                mSimplifiedToTelegraph.put(codePoint, ctcCode);
+                mSimplifiedMap.put(codePoint, ctcCode);
 
             }
 
@@ -175,7 +203,7 @@ public class CodeDictionary {
                 Integer codePoint = parseUnicodeCodepoint(tokens[0]);
                 Integer ctcCode = Integer.valueOf(tokens[1]);
 
-                mTraditionalToTelegraph.put(codePoint, ctcCode);
+                mTraditionalMap.put(codePoint, ctcCode);
 
             }
 
