@@ -220,4 +220,60 @@ public class CodeDictionary {
 
     }
 
+    /**
+     * The CodeMap class abstracts a bidirectional map to convert Unicode codepoints to telegraph
+     * codes, and vice-versa.
+     */
+    private static class CodeMap {
+
+        private static int DEFAULT_CAPACITY = 9000;
+
+        // Unicode codepoint is key, CTC code is value
+        private Map<Integer, Integer> mHanToTelegraph;
+
+        // CTC code is key, Unicode codepoint is value
+        private Map<Integer, Integer> mTelegraphToHan;
+
+        /**
+         * Constructs an empty CodeMap.
+         */
+        public CodeMap() {
+            mHanToTelegraph = new HashMap<>(DEFAULT_CAPACITY);
+            mTelegraphToHan = new HashMap<>(DEFAULT_CAPACITY);
+        }
+
+        /**
+         * Associates the specified Chinese character codepoint with the specified telegraph code in
+         * this map. If the map previously contained a mapping for this codepoint or telegraph code,
+         * the old value is replaced.
+         * @param han a Chinese character Unicode codepoint
+         * @param telegraph a Chinese telegraph code
+         */
+        public void put(int han, int telegraph) {
+            mHanToTelegraph.put(han, telegraph);
+            mTelegraphToHan.put(telegraph, han);
+        }
+
+        /**
+         * Returns the telegraph code to which the specified Chinese character codepoint is mapped,
+         * or null if this map contains no mapping for the codepoint.
+         * @param han a Chinese character Unicode codepoint
+         * @return the corresponding Chinese telegraph code
+         */
+        public Integer hanToTelegraph(int han) {
+            return mHanToTelegraph.get(han);
+        }
+
+        /**
+         * Returns the Chinese character codepoint to which the specified telegraph code is mapped,
+         * or null if this map contains no mapping for the Chinese character codepoint.
+         * @param telegraph a Chinese telegraph code
+         * @return the corresponding Chinese character Unicode codepoint
+         */
+        public Integer telegraphToHan(int telegraph) {
+            return mTelegraphToHan.get(telegraph);
+        }
+
+    }
+
 }
