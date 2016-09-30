@@ -10,15 +10,22 @@ public class TranslatorThread extends Thread {
 
     public static final String TAG = "TranslatorThread";
 
-    private String mPendingText;
     private volatile String mInputText;
+    private volatile boolean mUsesTraditional;
+
+    private String mPendingText;
+
     private Handler mResponseHandler;
 
     public TranslatorThread(Handler responseHandler) {
+
         super(TAG);
         mPendingText = "";
         mInputText = "";
         mResponseHandler = responseHandler;
+
+        mUsesTraditional = false;
+
     }
 
     /**
@@ -28,6 +35,16 @@ public class TranslatorThread extends Thread {
      */
     public void requestTranslation(String inputText) {
         mInputText = inputText;
+    }
+
+    /**
+     * Sets whether or not traditional Chinese characters should be used for translation.
+     * @param isTraditionalEnabled true if traditional Chinese characters should be used for
+     *                             translation, false if simplified Chinese character should be
+     *                             used for translation
+     */
+    public void setTraditionalEnabled(boolean isTraditionalEnabled) {
+        mUsesTraditional = isTraditionalEnabled;
     }
 
     @Override
