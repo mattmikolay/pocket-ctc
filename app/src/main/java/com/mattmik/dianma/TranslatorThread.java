@@ -10,12 +10,19 @@ public class TranslatorThread extends Thread {
 
     public static final String TAG = "TranslatorThread";
 
+    /** Translation mode for conversion from Chinese characters to telegraph code. */
+    public static final int MODE_HAN_TO_TELE = 0;
+
+    /** Translation mode for conversion from telegraph code to Chinese characters.  */
+    public static final int MODE_TELE_TO_HAN = 1;
+
     private static final int STATE_INIT = 0;
     private static final int STATE_PROCESSING = 1;
     private static final int STATE_SEND = 2;
     private static final int STATE_DONE = 3;
 
     private volatile String mInputText;
+    private volatile int mMode;
     private volatile boolean mUsesTraditional;
 
     private int mState;
@@ -29,6 +36,7 @@ public class TranslatorThread extends Thread {
         super(TAG);
 
         mInputText = "";
+        mMode = MODE_HAN_TO_TELE;
         mUsesTraditional = false;
 
         mState = STATE_DONE;
@@ -56,6 +64,15 @@ public class TranslatorThread extends Thread {
      */
     public void setTraditionalEnabled(boolean isTraditionalEnabled) {
         mUsesTraditional = isTraditionalEnabled;
+    }
+
+    /**
+     * Sets the translation mode for this thread.
+     * @param mode a translate mode. Valid values are {@link #MODE_HAN_TO_TELE} and
+     *             {@link #MODE_TELE_TO_HAN}.
+     */
+    public void setTranslateMode(int mode) {
+        mMode = mode;
     }
 
     @Override
