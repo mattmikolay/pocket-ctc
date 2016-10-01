@@ -1,9 +1,11 @@
 package com.mattmik.dianma;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -133,6 +135,34 @@ public class TranslateActivity extends AppCompatActivity {
         savedInstanceState.putString(STATE_INPUT_TEXT, mInputText.getText().toString());
 
         super.onSaveInstanceState(savedInstanceState);
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        SharedPreferences userPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String language = userPrefs.getString(SettingsActivity.KEY_LANGUAGE, "");
+
+        // Switch character set (simplified or traditional) based upon user's settings
+        if("zh-Hans".equals(language)) {
+
+            Log.d(TAG, "Simplified character set will be used for translation.");
+            mTranslator.setTraditionalEnabled(false);
+
+        } else if("zh-Hant".equals(language)) {
+
+            Log.d(TAG, "Traditional character set will be used for translation.");
+            mTranslator.setTraditionalEnabled(true);
+
+        } else {
+
+            Log.d(TAG, "Invalid language specified. Defaulting to simplified.");
+            mTranslator.setTraditionalEnabled(false);
+
+        }
+
+        super.onResume();
 
     }
 

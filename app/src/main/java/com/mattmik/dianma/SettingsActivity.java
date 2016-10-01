@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String KEY_LANGUAGE = "pref_language";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
