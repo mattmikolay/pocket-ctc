@@ -2,9 +2,12 @@ package com.mattmik.dianma;
 
 // Copyright 2016 Matthew Mikolay. All rights reserved.
 
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import java.util.Locale;
 
 public class TranslatorThread extends Thread {
 
@@ -26,12 +29,15 @@ public class TranslatorThread extends Thread {
     private volatile boolean mUsesTraditional;
 
     private int mState;
+    private int mIndex;
     private String mPendingText;
     private StringBuilder mResultBuilder;
 
     private Handler mResponseHandler;
 
-    public TranslatorThread(Handler responseHandler) {
+    private CodeDictionary mDictionary;
+
+    public TranslatorThread(Handler responseHandler, Resources resources) {
 
         super(TAG);
 
@@ -44,6 +50,8 @@ public class TranslatorThread extends Thread {
         mResultBuilder = null;
 
         mResponseHandler = responseHandler;
+
+        mDictionary = new CodeDictionary(resources);
 
     }
 
@@ -118,8 +126,15 @@ public class TranslatorThread extends Thread {
      * Initializes fields to prepare for translating a given text.
      */
     private void init() {
+
+        // Load data needed by the conversion dictionary, if needed
+        if(!mDictionary.isLoaded())
+            mDictionary.loadAllData();
+
         mPendingText = mInputText;
+        mIndex = 0;
         mResultBuilder = new StringBuilder();
+
     }
 
     /**
@@ -127,8 +142,66 @@ public class TranslatorThread extends Thread {
      * no-op.
      */
     private void stepTranslation() {
-        // TODO Code me!
+
+        switch(mMode) {
+
+            case MODE_HAN_TO_TELE:
+                stepHanToTele();
+                break;
+
+            case MODE_TELE_TO_HAN:
+                stepTeleToHan();
+                break;
+
+            default:
+                throw new IllegalStateException("Translation mode is set to an invalid value.");
+
+        }
+
+    }
+
+    /**
+     * Performs a single unit of work toward converting a string of Chinese characters into
+     * telegraph code.
+     */
+    private void stepHanToTele() {
+
+        if(isTranslationFinished())
+            return;
+
+        int codepoint = mPendingText.codePointAt(mIndex);
+
+        Integer tele = (!mUsesTraditional) ? mDictionary.simplifiedToTelegraph(codepoint) :
+                mDictionary.traditionalToTelegraph(codepoint);
+
+        if(tele == null) {
+
+            // If dictionary returned null, just append the original character code
+            mResultBuilder.appendCodePoint(codepoint);
+
+        } else {
+
+            // Append telephony code as a four digit string of numbers
+            String formatted = String.format(Locale.US, "%04d", tele);
+            mResultBuilder.append(formatted);
+            mResultBuilder.append(' ');
+
+        }
+
+        mIndex += Character.charCount(codepoint);
+
+    }
+
+    /**
+     * Performs a single unit of work toward converting a string of telegraph codes into Chinese
+     * characters.
+     */
+    private void stepTeleToHan() {
+
+        // TODO Code me! For now, just return uppercase form of given text.
+        mIndex = mPendingText.length();
         mResultBuilder.append(mPendingText.toUpperCase());
+
     }
 
     /**
@@ -136,8 +209,7 @@ public class TranslatorThread extends Thread {
      * @return true if translation has finished, false otherwise
      */
     private boolean isTranslationFinished() {
-        // TODO Code me!
-        return true;
+        return (mIndex >= mPendingText.length());
     }
 
     /**

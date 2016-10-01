@@ -105,7 +105,9 @@ public class TranslateActivity extends AppCompatActivity {
         };
 
         // Start the TranslatorThread to perform translation in the background
-        mTranslator = new TranslatorThread(mHandler);
+        mTranslator = new TranslatorThread(mHandler, getResources());
+        mTranslator.setTranslateMode(TranslatorThread.MODE_HAN_TO_TELE);
+        mTranslator.setTraditionalEnabled(false);
         mTranslator.start();
 
     }

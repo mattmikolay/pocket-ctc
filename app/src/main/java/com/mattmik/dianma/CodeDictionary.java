@@ -63,12 +63,20 @@ public class CodeDictionary {
     }
 
     /**
+     * Returns whether or not all data needed to perform conversions has been loaded.
+     * @return true if all needed data has been loaded, false otherwise
+     */
+    public boolean isLoaded() {
+        return (mIsSimplifiedLoaded && mIsTraditionalLoaded);
+    }
+
+    /**
      * Converts the given simplified Chinese character codepoint into the corresponding telegraph
      * code. For example, an input of 0x56FD will yield 948.
      * @param code a valid simplified Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
-    public int simplifiedToTelegraph(int code) {
+    public Integer simplifiedToTelegraph(int code) {
 
         if(!mIsSimplifiedLoaded)
             throw new IllegalStateException("Simplified dictionary has not been loaded.");
@@ -83,7 +91,7 @@ public class CodeDictionary {
      * @param code a valid traditional Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
-    public int traditionalToTelegraph(int code) {
+    public Integer traditionalToTelegraph(int code) {
 
         if(!mIsTraditionalLoaded)
             throw new IllegalStateException("Traditional dictionary has not been loaded.");
