@@ -29,8 +29,7 @@ public class TranslatorThread extends Thread {
     private volatile boolean mUsesTraditional;
 
     private int mState;
-    private int mIndex;
-    private String mPendingText;
+    private Tokenizer mTokenizer;
     private StringBuilder mResultBuilder;
 
     private Handler mResponseHandler;
@@ -46,7 +45,7 @@ public class TranslatorThread extends Thread {
         mUsesTraditional = false;
 
         mState = STATE_DONE;
-        mPendingText = "";
+        mTokenizer = null;
         mResultBuilder = null;
 
         mResponseHandler = responseHandler;
@@ -61,7 +60,12 @@ public class TranslatorThread extends Thread {
      * @param inputText a string of text to be translated
      */
     public void requestTranslation(String inputText) {
+
+        if(inputText == null)
+            throw new IllegalArgumentException("Translation cannot be performed on a null value.");
+
         mInputText = inputText;
+
     }
 
     /**
@@ -88,7 +92,7 @@ public class TranslatorThread extends Thread {
 
         while(!isInterrupted()) {
 
-            if(!mPendingText.equals(mInputText))
+            if(mTokenizer == null || !mInputText.equals(mTokenizer.getInput()))
                 mState = STATE_INIT;
 
             switch(mState) {
@@ -102,7 +106,7 @@ public class TranslatorThread extends Thread {
 
                     stepTranslation();
 
-                    if(isTranslationFinished())
+                    if(!mTokenizer.hasMoreTokens())
                         mState = STATE_SEND;
 
                     break;
@@ -131,8 +135,7 @@ public class TranslatorThread extends Thread {
         if(!mDictionary.isLoaded())
             mDictionary.loadAllData();
 
-        mPendingText = mInputText;
-        mIndex = 0;
+        mTokenizer = new CodepointTokenizer(mInputText);
         mResultBuilder = new StringBuilder();
 
     }
@@ -166,10 +169,10 @@ public class TranslatorThread extends Thread {
      */
     private void stepHanToTele() {
 
-        if(isTranslationFinished())
+        if(!mTokenizer.hasMoreTokens())
             return;
 
-        int codepoint = mPendingText.codePointAt(mIndex);
+        int codepoint = (Integer) mTokenizer.nextToken();
 
         Integer tele = (!mUsesTraditional) ? mDictionary.simplifiedToTelegraph(codepoint) :
                 mDictionary.traditionalToTelegraph(codepoint);
@@ -188,8 +191,6 @@ public class TranslatorThread extends Thread {
 
         }
 
-        mIndex += Character.charCount(codepoint);
-
     }
 
     /**
@@ -199,17 +200,8 @@ public class TranslatorThread extends Thread {
     private void stepTeleToHan() {
 
         // TODO Code me! For now, just return uppercase form of given text.
-        mIndex = mPendingText.length();
-        mResultBuilder.append(mPendingText.toUpperCase());
+        // mResultBuilder.append(mPendingText.toUpperCase());
 
-    }
-
-    /**
-     * Returns true if the translation has finished.
-     * @return true if translation has finished, false otherwise
-     */
-    private boolean isTranslationFinished() {
-        return (mIndex >= mPendingText.length());
     }
 
     /**
