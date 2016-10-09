@@ -29,6 +29,8 @@ public class TranslatorThread extends Thread {
     private volatile boolean mUsesTraditional;
 
     private int mState;
+    private int mInProcessMode;
+    private boolean mInProcessUsesTraditional;
     private Tokenizer mTokenizer;
     private StringBuilder mResultBuilder;
 
@@ -41,8 +43,8 @@ public class TranslatorThread extends Thread {
         super(TAG);
 
         mInputText = "";
-        mMode = MODE_HAN_TO_TELE;
-        mUsesTraditional = false;
+        mMode = mInProcessMode = MODE_HAN_TO_TELE;
+        mUsesTraditional = mInProcessUsesTraditional = false;
 
         mState = STATE_DONE;
         mTokenizer = null;
@@ -92,8 +94,15 @@ public class TranslatorThread extends Thread {
 
         while(!isInterrupted()) {
 
-            if(mTokenizer == null || !mInputText.equals(mTokenizer.getInput()))
+            // Start a new translation if:
+            // 1. A tokenizer has not been initialized OR
+            // 2. The given input text differs from the text currently being tokenized OR
+            // 3. The given translation mode differs from the in progress translation mode OR
+            // 4. The given Chinese character set differs from the in progress character set
+            if(mTokenizer == null || !mInputText.equals(mTokenizer.getInput())
+                    || mInProcessMode != mMode || mInProcessUsesTraditional != mUsesTraditional) {
                 mState = STATE_INIT;
+            }
 
             switch(mState) {
 
@@ -135,8 +144,11 @@ public class TranslatorThread extends Thread {
         if(!mDictionary.isLoaded())
             mDictionary.loadAllData();
 
+        mInProcessMode = mMode;
+        mInProcessUsesTraditional = mUsesTraditional;
+
         // Set up a tokenizer for the input string based upon the given translation mode
-        switch(mMode) {
+        switch(mInProcessMode) {
 
             case MODE_HAN_TO_TELE:
                 mTokenizer = new CodepointTokenizer(mInputText);
@@ -161,7 +173,7 @@ public class TranslatorThread extends Thread {
      */
     private void stepTranslation() {
 
-        switch(mMode) {
+        switch(mInProcessMode) {
 
             case MODE_HAN_TO_TELE:
                 stepHanToTele();
@@ -189,7 +201,7 @@ public class TranslatorThread extends Thread {
 
         int codepoint = (Integer) mTokenizer.nextToken();
 
-        Integer tele = (!mUsesTraditional) ? mDictionary.simplifiedToTelegraph(codepoint) :
+        Integer tele = (!mInProcessUsesTraditional) ? mDictionary.simplifiedToTelegraph(codepoint) :
                 mDictionary.traditionalToTelegraph(codepoint);
 
         if(tele == null) {
@@ -223,7 +235,8 @@ public class TranslatorThread extends Thread {
 
             int value = Integer.parseInt(token);
 
-            Integer codepoint = (!mUsesTraditional) ? mDictionary.telegraphToSimplified(value) :
+            Integer codepoint = (!mInProcessUsesTraditional) ?
+                    mDictionary.telegraphToSimplified(value) :
                     mDictionary.telegraphToTraditional(value);
 
             if(codepoint == null) {
