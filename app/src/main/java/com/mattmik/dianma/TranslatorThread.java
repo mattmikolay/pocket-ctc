@@ -135,7 +135,22 @@ public class TranslatorThread extends Thread {
         if(!mDictionary.isLoaded())
             mDictionary.loadAllData();
 
-        mTokenizer = new CodepointTokenizer(mInputText);
+        // Set up a tokenizer for the input string based upon the given translation mode
+        switch(mMode) {
+
+            case MODE_HAN_TO_TELE:
+                mTokenizer = new CodepointTokenizer(mInputText);
+                break;
+
+            case MODE_TELE_TO_HAN:
+                mTokenizer = new NumberTokenizer(mInputText);
+                break;
+
+            default:
+                throw new IllegalStateException("Translation mode is set to an invalid value.");
+
+        }
+
         mResultBuilder = new StringBuilder();
 
     }
@@ -199,8 +214,37 @@ public class TranslatorThread extends Thread {
      */
     private void stepTeleToHan() {
 
-        // TODO Code me! For now, just return uppercase form of given text.
-        // mResultBuilder.append(mPendingText.toUpperCase());
+        if(!mTokenizer.hasMoreTokens())
+            return;
+
+        String token = (String) mTokenizer.nextToken();
+
+        try {
+
+            int value = Integer.parseInt(token);
+
+            Integer codepoint = (!mUsesTraditional) ? mDictionary.telegraphToSimplified(value) :
+                    mDictionary.telegraphToTraditional(value);
+
+            if(codepoint == null) {
+
+                // This integer value does not correspond to a Chinese character, so just append the
+                // original token to the result string
+                mResultBuilder.append(token);
+
+            } else {
+
+                // Append the corresponding Chinese character codepoint
+                mResultBuilder.appendCodePoint(codepoint);
+
+            }
+
+        } catch(NumberFormatException e) {
+
+            // Append this non-numeric token to the result string
+            mResultBuilder.append(token);
+
+        }
 
     }
 
