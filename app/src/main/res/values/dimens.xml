@@ -4,4 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Language switcher label padding -->
+    <dimen name="switcher_label_padding">16dp</dimen>
+
 </resources>

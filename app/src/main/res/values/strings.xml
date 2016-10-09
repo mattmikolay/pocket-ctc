@@ -7,7 +7,11 @@
 
     <string name="lang_simplified">Simplified Chinese</string>
     <string name="lang_traditional">Traditional Chinese</string>
+    <string name="lang_chinese">Chinese</string>
+    <string name="lang_telephony">Telephony</string>
 
     <string name="code_simplified">zh-Hans</string>
     <string name="code_traditional">zh-Hant</string>
+
+    <string name="desc_switcher">Switch input and output formats</string>
 </resources>
