@@ -13,12 +13,14 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 // Copyright 2016 Matthew Mikolay. All rights reserved.
 
-public class TranslateActivity extends AppCompatActivity {
+public class TranslateActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "TranslateActivity";
 
@@ -28,9 +30,14 @@ public class TranslateActivity extends AppCompatActivity {
     private static final int UPDATE_DELAY = 200;
 
     private static final String STATE_INPUT_TEXT = "inputText";
+    private static final String STATE_TRANSLATE_MODE = "translateMode";
+
+    private int mTranslateMode;
 
     private EditText mInputText;
     private TextView mOutputText;
+    private TextView mFromLanguageLabel;
+    private TextView mToLanguageLabel;
     private Handler mHandler;
     private TranslatorThread mTranslator;
 
@@ -106,9 +113,29 @@ public class TranslateActivity extends AppCompatActivity {
 
         };
 
+        mFromLanguageLabel = (TextView) findViewById(R.id.txt_from_language);
+        mToLanguageLabel = (TextView) findViewById(R.id.txt_to_language);
+
+        ImageButton switcherButton = (ImageButton) findViewById(R.id.btn_switcher);
+        switcherButton.setOnClickListener(this);
+
+        // Default to conversion from Chinese characters to telegraph code, but restore previous
+        // translation mode if needed
+        mTranslateMode = TranslatorThread.MODE_HAN_TO_TELE;
+        if(savedInstanceState != null) {
+
+            Log.d(TAG, "Restoring translation mode from activity recreation.");
+
+            mTranslateMode = savedInstanceState.getInt(STATE_TRANSLATE_MODE,
+                    TranslatorThread.MODE_HAN_TO_TELE);
+
+        }
+
+        refreshSwitcherLabels();
+
         // Start the TranslatorThread to perform translation in the background
         mTranslator = new TranslatorThread(mHandler, getResources());
-        mTranslator.setTranslateMode(TranslatorThread.MODE_HAN_TO_TELE);
+        mTranslator.setTranslateMode(mTranslateMode);
         mTranslator.setTraditionalEnabled(false);
         mTranslator.start();
 
@@ -133,6 +160,9 @@ public class TranslateActivity extends AppCompatActivity {
 
         // Save input text specified by user
         savedInstanceState.putString(STATE_INPUT_TEXT, mInputText.getText().toString());
+
+        // Save current translation mode
+        savedInstanceState.putInt(STATE_TRANSLATE_MODE, mTranslateMode);
 
         super.onSaveInstanceState(savedInstanceState);
 
@@ -207,6 +237,43 @@ public class TranslateActivity extends AppCompatActivity {
 
         Intent launchIntent = new Intent(this, SettingsActivity.class);
         startActivity(launchIntent);
+
+    }
+
+    /**
+     * Updates the text displayed on the switcher to match the current translation mode.
+     */
+    private void refreshSwitcherLabels() {
+
+        if(mTranslateMode == TranslatorThread.MODE_TELE_TO_HAN) {
+
+            mFromLanguageLabel.setText(R.string.lang_telephony);
+            mToLanguageLabel.setText(R.string.lang_chinese);
+
+        } else {
+
+            mFromLanguageLabel.setText(R.string.lang_chinese);
+            mToLanguageLabel.setText(R.string.lang_telephony);
+
+        }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view.getId() == R.id.btn_switcher) {
+
+            // Switch to the opposite translate mode
+            mTranslateMode = (mTranslateMode == TranslatorThread.MODE_HAN_TO_TELE) ?
+                    TranslatorThread.MODE_TELE_TO_HAN :
+                    TranslatorThread.MODE_HAN_TO_TELE;
+
+            // Update TranslatorThread and the labels show on the switcher
+            mTranslator.setTranslateMode(mTranslateMode);
+            refreshSwitcherLabels();
+
+        }
 
     }
 
