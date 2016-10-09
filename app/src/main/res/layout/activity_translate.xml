@@ -15,51 +15,11 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/langset_toolbar"
+        layout="@layout/toolbar_switcher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_toolbar"
-        android:background="?attr/colorAccent"
-        android:elevation="0dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingEnd="@dimen/switcher_label_padding"
-            android:paddingLeft="@dimen/switcher_label_padding"
-            android:paddingRight="@dimen/switcher_label_padding"
-            android:paddingStart="@dimen/switcher_label_padding"
-            android:text="@string/lang_chinese"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/btn_switcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/desc_switcher"
-            android:padding="8dp"
-            android:src="@drawable/ic_swap" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingEnd="@dimen/switcher_label_padding"
-            android:paddingLeft="@dimen/switcher_label_padding"
-            android:paddingRight="@dimen/switcher_label_padding"
-            android:paddingStart="@dimen/switcher_label_padding"
-            android:text="@string/lang_telephony"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/langset_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_toolbar"
+        android:background="?attr/colorAccent"
+        android:contentInsetEnd="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetRight="0dp"
+        android:contentInsetStart="0dp"
+        android:elevation="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_from_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btn_switcher"
+                android:layout_toStartOf="@+id/btn_switcher"
+                android:gravity="end"
+                android:paddingEnd="@dimen/switcher_label_padding"
+                android:paddingLeft="@dimen/switcher_label_padding"
+                android:paddingRight="@dimen/switcher_label_padding"
+                android:paddingStart="@dimen/switcher_label_padding"
+                android:text="@string/lang_chinese"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/desc_switcher"
+                android:padding="8dp"
+                android:src="@drawable/ic_swap" />
+
+            <TextView
+                android:id="@+id/txt_to_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/btn_switcher"
+                android:layout_toRightOf="@id/btn_switcher"
+                android:gravity="start"
+                android:paddingEnd="@dimen/switcher_label_padding"
+                android:paddingLeft="@dimen/switcher_label_padding"
+                android:paddingRight="@dimen/switcher_label_padding"
+                android:paddingStart="@dimen/switcher_label_padding"
+                android:text="@string/lang_telephony"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</merge>
