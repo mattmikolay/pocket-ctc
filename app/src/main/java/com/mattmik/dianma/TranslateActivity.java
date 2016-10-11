@@ -121,13 +121,13 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
         // Default to conversion from Chinese characters to telegraph code, but restore previous
         // translation mode if needed
-        mTranslateMode = TranslatorThread.MODE_HAN_TO_TELE;
+        mTranslateMode = TranslateMode.HAN_TO_TELE;
         if(savedInstanceState != null) {
 
             Log.d(TAG, "Restoring translation mode from activity recreation.");
 
             mTranslateMode = savedInstanceState.getInt(STATE_TRANSLATE_MODE,
-                    TranslatorThread.MODE_HAN_TO_TELE);
+                    TranslateMode.HAN_TO_TELE);
 
         }
 
@@ -245,7 +245,7 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
      */
     private void refreshSwitcherLabels() {
 
-        if(mTranslateMode == TranslatorThread.MODE_TELE_TO_HAN) {
+        if(mTranslateMode == TranslateMode.TELE_TO_HAN) {
 
             mFromLanguageLabel.setText(R.string.lang_telephony);
             mToLanguageLabel.setText(R.string.lang_chinese);
@@ -265,9 +265,9 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
         if(view.getId() == R.id.btn_switcher) {
 
             // Switch to the opposite translate mode
-            mTranslateMode = (mTranslateMode == TranslatorThread.MODE_HAN_TO_TELE) ?
-                    TranslatorThread.MODE_TELE_TO_HAN :
-                    TranslatorThread.MODE_HAN_TO_TELE;
+            mTranslateMode = (mTranslateMode == TranslateMode.HAN_TO_TELE) ?
+                    TranslateMode.TELE_TO_HAN :
+                    TranslateMode.HAN_TO_TELE;
 
             // Update TranslatorThread and the labels show on the switcher
             mTranslator.setTranslateMode(mTranslateMode);

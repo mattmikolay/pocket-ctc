@@ -13,12 +13,6 @@ public class TranslatorThread extends Thread {
 
     public static final String TAG = "TranslatorThread";
 
-    /** Translation mode for conversion from Chinese characters to telegraph code. */
-    public static final int MODE_HAN_TO_TELE = 0;
-
-    /** Translation mode for conversion from telegraph code to Chinese characters.  */
-    public static final int MODE_TELE_TO_HAN = 1;
-
     private static final int STATE_INIT = 0;
     private static final int STATE_PROCESSING = 1;
     private static final int STATE_SEND = 2;
@@ -43,7 +37,7 @@ public class TranslatorThread extends Thread {
         super(TAG);
 
         mInputText = "";
-        mMode = mInProcessMode = MODE_HAN_TO_TELE;
+        mMode = mInProcessMode = TranslateMode.HAN_TO_TELE;
         mUsesTraditional = mInProcessUsesTraditional = false;
 
         mState = STATE_DONE;
@@ -82,8 +76,8 @@ public class TranslatorThread extends Thread {
 
     /**
      * Sets the translation mode for this thread.
-     * @param mode a translate mode. Valid values are {@link #MODE_HAN_TO_TELE} and
-     *             {@link #MODE_TELE_TO_HAN}.
+     * @param mode a translate mode. Valid values are {@link TranslateMode#HAN_TO_TELE} and
+     *             {@link TranslateMode#TELE_TO_HAN}.
      */
     public void setTranslateMode(int mode) {
         mMode = mode;
@@ -150,11 +144,11 @@ public class TranslatorThread extends Thread {
         // Set up a tokenizer for the input string based upon the given translation mode
         switch(mInProcessMode) {
 
-            case MODE_HAN_TO_TELE:
+            case TranslateMode.HAN_TO_TELE:
                 mTokenizer = new CodepointTokenizer(mInputText);
                 break;
 
-            case MODE_TELE_TO_HAN:
+            case TranslateMode.TELE_TO_HAN:
                 mTokenizer = new NumberTokenizer(mInputText);
                 break;
 
@@ -175,11 +169,11 @@ public class TranslatorThread extends Thread {
 
         switch(mInProcessMode) {
 
-            case MODE_HAN_TO_TELE:
+            case TranslateMode.HAN_TO_TELE:
                 stepHanToTele();
                 break;
 
-            case MODE_TELE_TO_HAN:
+            case TranslateMode.TELE_TO_HAN:
                 stepTeleToHan();
                 break;
 
