@@ -13,14 +13,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 // Copyright 2016 Matthew Mikolay. All rights reserved.
 
-public class TranslateActivity extends AppCompatActivity implements View.OnClickListener {
+public class TranslateActivity extends AppCompatActivity
+        implements SwitcherView.OnTranslateModeSwitchListener {
 
     public static final String TAG = "TranslateActivity";
 
@@ -36,8 +35,6 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
     private EditText mInputText;
     private TextView mOutputText;
-    private TextView mFromLanguageLabel;
-    private TextView mToLanguageLabel;
     private Handler mHandler;
     private TranslatorThread mTranslator;
 
@@ -113,12 +110,6 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
         };
 
-        mFromLanguageLabel = (TextView) findViewById(R.id.txt_from_language);
-        mToLanguageLabel = (TextView) findViewById(R.id.txt_to_language);
-
-        ImageButton switcherButton = (ImageButton) findViewById(R.id.btn_switcher);
-        switcherButton.setOnClickListener(this);
-
         // Default to conversion from Chinese characters to telegraph code, but restore previous
         // translation mode if needed
         mTranslateMode = TranslateMode.HAN_TO_TELE;
@@ -131,7 +122,9 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
         }
 
-        refreshSwitcherLabels();
+        SwitcherView modeSwitcher = (SwitcherView) findViewById(R.id.langset_toolbar);
+        modeSwitcher.setOnModeChangeListener(this);
+        modeSwitcher.setTranslateMode(mTranslateMode);
 
         // Start the TranslatorThread to perform translation in the background
         mTranslator = new TranslatorThread(mHandler, getResources());
@@ -240,40 +233,11 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    /**
-     * Updates the text displayed on the switcher to match the current translation mode.
-     */
-    private void refreshSwitcherLabels() {
-
-        if(mTranslateMode == TranslateMode.TELE_TO_HAN) {
-
-            mFromLanguageLabel.setText(R.string.lang_telephony);
-            mToLanguageLabel.setText(R.string.lang_chinese);
-
-        } else {
-
-            mFromLanguageLabel.setText(R.string.lang_chinese);
-            mToLanguageLabel.setText(R.string.lang_telephony);
-
-        }
-
-    }
-
     @Override
-    public void onClick(View view) {
+    public void onTranslateModeSwitched(int mode) {
 
-        if(view.getId() == R.id.btn_switcher) {
-
-            // Switch to the opposite translate mode
-            mTranslateMode = (mTranslateMode == TranslateMode.HAN_TO_TELE) ?
-                    TranslateMode.TELE_TO_HAN :
-                    TranslateMode.HAN_TO_TELE;
-
-            // Update TranslatorThread and the labels show on the switcher
-            mTranslator.setTranslateMode(mTranslateMode);
-            refreshSwitcherLabels();
-
-        }
+        mTranslateMode = mode;
+        mTranslator.setTranslateMode(mTranslateMode);
 
     }
 
