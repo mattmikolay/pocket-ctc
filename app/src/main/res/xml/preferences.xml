@@ -2,11 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="pref_language"
-        android:title="@string/title_language"
+        android:defaultValue="@string/code_simplified"
         android:dialogTitle="@string/title_language"
         android:entries="@array/language_names"
         android:entryValues="@array/language_codes"
-        android:defaultValue="@string/code_simplified"/>
+        android:key="pref_language"
+        android:title="@string/title_language" />
+
+    <Preference android:title="@string/title_about">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.mattmik.dianma.AboutActivity"
+            android:targetPackage="com.mattmik.dianma" />
+
+    </Preference>
 
 </PreferenceScreen>
