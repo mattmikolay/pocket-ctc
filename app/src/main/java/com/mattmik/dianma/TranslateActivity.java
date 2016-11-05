@@ -132,6 +132,16 @@ public class TranslateActivity extends AppCompatActivity
         mTranslator.setTraditionalEnabled(false);
         mTranslator.start();
 
+        // If the user is sharing into this app, load the EditText with the shared text. Translation
+        // will be triggered by the registered TextWatcher.
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if(Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mInputText.setText(sharedText);
+        }
+
     }
 
     @Override
