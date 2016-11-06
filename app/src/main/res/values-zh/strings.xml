@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">袖珍中文電碼</string>
+
+    <string name="title_language">語言</string>
+    <string name="title_settings">設置</string>
+    <string name="title_about">關於應用</string>
+
+    <string name="lang_simplified">簡體中文</string>
+    <string name="lang_traditional">繁體中文</string>
+    <string name="lang_chinese">中文</string>
+    <string name="lang_telephony">電碼</string>
+
+</resources>
