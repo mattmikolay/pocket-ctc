@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Pocket CTC</string>
     <string name="hint_input">Enter Chinese here</string>
 
@@ -11,29 +12,29 @@
     <string name="lang_chinese">Chinese</string>
     <string name="lang_telephony">Telephony</string>
 
-    <string name="code_simplified">zh-Hans</string>
-    <string name="code_traditional">zh-Hant</string>
+    <string name="code_simplified" translatable="false">zh-Hans</string>
+    <string name="code_traditional" translatable="false">zh-Hant</string>
 
     <string name="desc_switcher">Switch input and output formats</string>
 
-    <string name="app_copyright_info">
+    <string name="app_copyright_info" translatable="false">
     Copyright 2016 Matthew Mikolay.
     All rights reserved.
     </string>
 
-    <string name="about_version">Version %1$s</string>
+    <string name="about_version" translatable="false">Version %1$s</string>
 
-    <string name="app_gnu_notice">
+    <string name="app_gnu_notice" translatable="false">
     Pocket CTC is licensed under the GNU General Public License v3.0:
     </string>
 
-    <string name="app_unicode_notice">
+    <string name="app_unicode_notice" translatable="false">
     Pocket CTC makes use of data from the Unihan Database, which is provided by
     Unicode, Inc. Unicode Data Files are licensed under \"UNICODE, INC. LICENSE
     AGREEMENT - DATA FILES AND SOFTWARE\":
     </string>
 
-    <string name="app_gnu_license">
+    <string name="app_gnu_license" translatable="false">
     This program is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the Free
     Software Foundation, either version 3 of the License, or (at your option)
@@ -44,7 +45,7 @@
     &lt;http://www.gnu.org/licenses/&gt;.
     </string>
 
-    <string name="app_unicode_license">
+    <string name="app_unicode_license" translatable="false">
     COPYRIGHT AND PERMISSION NOTICE\n\nCopyright \u00A9 1991-2016 Unicode, Inc.
     All rights reserved.\nDistributed under the Terms of Use in
     http://www.unicode.org/copyright.html.\n\nPermission is hereby granted, free
