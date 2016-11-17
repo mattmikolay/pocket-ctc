@@ -125,6 +125,7 @@ public class TranslateActivity extends AppCompatActivity
         SwitcherView modeSwitcher = (SwitcherView) findViewById(R.id.langset_toolbar);
         modeSwitcher.setOnModeChangeListener(this);
         modeSwitcher.setTranslateMode(mTranslateMode);
+        refreshInputTextHints();
 
         // Start the TranslatorThread to perform translation in the background
         mTranslator = new TranslatorThread(mHandler, getResources());
@@ -243,11 +244,24 @@ public class TranslateActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Refreshes the hints for the EditText used to receive user input.
+     */
+    private void refreshInputTextHints() {
+
+        int hintResource = (mTranslateMode == TranslateMode.HAN_TO_TELE) ?
+                R.string.hint_input_chinese : R.string.hint_input_telephony;
+        mInputText.setHint(hintResource);
+
+    }
+
     @Override
     public void onTranslateModeSwitched(int mode) {
 
         mTranslateMode = mode;
         mTranslator.setTranslateMode(mTranslateMode);
+
+        refreshInputTextHints();
 
     }
 

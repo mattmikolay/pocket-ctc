@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:gravity="top|start"
-                android:hint="@string/hint_input"
+                android:hint="@string/hint_input_chinese"
                 android:inputType="textMultiLine"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 

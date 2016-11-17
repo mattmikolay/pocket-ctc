@@ -1,7 +1,8 @@
 <resources>
 
     <string name="app_name">Pocket CTC</string>
-    <string name="hint_input">Enter Chinese here</string>
+    <string name="hint_input_chinese">Enter Chinese here</string>
+    <string name="hint_input_telephony">Enter telephony codes here</string>
 
     <string name="title_language">Language</string>
     <string name="title_settings">Settings</string>
