@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Pocket CTC</string>
-    <string name="hint_input_chinese">Enter Chinese here</string>
-    <string name="hint_input_telephony">Enter telephony codes here</string>
+    <string name="hint_input_chinese">Enter Chinese</string>
+    <string name="hint_input_telephony">Enter telephony code</string>
 
     <string name="title_language">Language</string>
     <string name="title_settings">Settings</string>
@@ -16,7 +17,7 @@
     <string name="code_simplified" translatable="false">zh-Hans</string>
     <string name="code_traditional" translatable="false">zh-Hant</string>
 
-    <string name="desc_switcher">Switch input and output formats</string>
+    <string name="desc_switcher">Switch input and output</string>
 
     <string name="app_copyright_info" translatable="false">
     Copyright 2016 Matthew Mikolay.

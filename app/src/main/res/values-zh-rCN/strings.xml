@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">袖珍中文电码</string>
+    <string name="hint_input_chinese">输入中文</string>
+    <string name="hint_input_telephony">输入电码</string>
 
     <string name="title_language">语言</string>
     <string name="title_settings">设置</string>
@@ -11,5 +13,7 @@
     <string name="lang_traditional">繁体中文</string>
     <string name="lang_chinese">中文</string>
     <string name="lang_telephony">电码</string>
+
+    <string name="desc_switcher">切换输入和输出</string>
 
 </resources>
