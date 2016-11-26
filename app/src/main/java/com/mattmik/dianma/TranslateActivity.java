@@ -136,12 +136,17 @@ public class TranslateActivity extends AppCompatActivity
         // If the user is sharing into this app, load the EditText with the shared text. Translation
         // will be triggered by the registered TextWatcher.
         Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-        if(Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
-            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-            mInputText.setText(sharedText);
-        }
+        loadInputTextFromIntent(intent);
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        // Launch mode is singleTask, so Intent containing shared text will be passed to this method
+        // if TranslateActivity already exists at time of share.
+        super.onNewIntent(intent);
+        loadInputTextFromIntent(intent);
 
     }
 
@@ -230,6 +235,24 @@ public class TranslateActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+
+    }
+
+    /**
+     * Loads input text optionally stored in the given Intent.
+     * @param intent a given Intent
+     */
+    private void loadInputTextFromIntent(Intent intent) {
+
+        if(intent == null)
+            return;
+
+        String action = intent.getAction();
+        String type = intent.getType();
+        if(Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mInputText.setText(sharedText);
         }
 
     }
