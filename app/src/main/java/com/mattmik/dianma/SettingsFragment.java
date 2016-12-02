@@ -21,6 +21,10 @@ package com.mattmik.dianma;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+/**
+ * Allows the user to select Chinese character set (simplified or traditional) and view information
+ * about the app.
+ */
 public class SettingsFragment extends PreferenceFragment {
 
     @Override

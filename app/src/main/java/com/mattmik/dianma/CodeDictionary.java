@@ -50,6 +50,11 @@ public class CodeDictionary {
     private CodeMap mSimplifiedMap;
     private CodeMap mTraditionalMap;
 
+    /**
+     * Constructs a CodeDictionary. Before any conversion can be performed, the returned instance
+     * must be loaded using the {@link #loadAllData()} method.
+     * @param resources application's package Resources
+     */
     public CodeDictionary(Resources resources) {
 
         mResources = resources;

@@ -25,6 +25,12 @@ import android.util.Log;
 
 import java.util.Locale;
 
+/**
+ * Performs translation from Chinese characters to telephony codes, or vice-versa, asynchronously.
+ *
+ * Translated result text will be reported back to a given {@link Handler} inside a {@link Message}
+ * with value {@link TranslateActivity#MSG_TRANSLATE_SUCCESS}.
+ */
 public class TranslatorThread extends Thread {
 
     public static final String TAG = "TranslatorThread";
@@ -48,6 +54,11 @@ public class TranslatorThread extends Thread {
 
     private CodeDictionary mDictionary;
 
+    /**
+     * Constructs a TranslatorThread.
+     * @param responseHandler a Handler to receive translated result text
+     * @param resources application's package Resources
+     */
     public TranslatorThread(Handler responseHandler, Resources resources) {
 
         super(TAG);

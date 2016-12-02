@@ -34,12 +34,24 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+/**
+ * Allows the user to input Chinese characters for translation into telegraphy codes, and
+ * vice-versa.
+ */
 public class TranslateActivity extends AppCompatActivity
         implements SwitcherView.OnTranslateModeSwitchListener {
 
     public static final String TAG = "TranslateActivity";
 
+    /**
+     * Received by this activity's handler when new text is available for translation.
+     */
     public static final int MSG_REQUEST_TRANSLATION = 1;
+
+    /**
+     * Received by this activity's handler when a translated text is returned by
+     * {@link TranslatorThread}.
+     */
     public static final int MSG_TRANSLATE_SUCCESS = 2;
 
     private static final int UPDATE_DELAY = 200;

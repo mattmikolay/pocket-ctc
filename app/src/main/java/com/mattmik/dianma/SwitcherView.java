@@ -43,27 +43,54 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
     private OnTranslateModeSwitchListener mListener;
     private int mTranslateMode;
 
+    /**
+     * Constructs a new SwitcherView.
+     * @param context context in which this view is running
+     */
     public SwitcherView(Context context) {
         super(context);
         init(context);
     }
 
+    /**
+     * Constructs a new SwitcherView.
+     * @param context context in which this view is running
+     * @param attrs attributes of inflating XML tag
+     */
     public SwitcherView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
+    /**
+     * Constructs a new SwitcherView.
+     * @param context context in which this view is running
+     * @param attrs attributes of inflating XML tag
+     * @param defStyleAttr style attribute
+     */
     public SwitcherView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
+    /**
+     * Constructs a new SwitcherView.
+     * @param context context in which this view is running
+     * @param attrs attributes of inflating XML tag
+     * @param defStyleAttr style attribute
+     * @param defStyleRes style resource
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SwitcherView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
 
+    /**
+     * Initializes this SwitcherView to be ready for user action. This method will inflate this
+     * view's layout and set up any child views.
+     * @param context context in which this view is running
+     */
     private void init(Context context) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -143,8 +170,16 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
 
     }
 
+    /**
+     * Interface used to notify implementing classes when the app translation mode is changed.
+     */
     public interface OnTranslateModeSwitchListener {
 
+        /**
+         * Invoked when a user switches app translation modes using a {@link SwitcherView}.
+         * @param mode the new translation mode, either {@link TranslateMode#HAN_TO_TELE} or
+         *             {@link TranslateMode#TELE_TO_HAN}.
+         */
         void onTranslateModeSwitched(int mode);
 
     }

@@ -18,6 +18,9 @@
  */
 package com.mattmik.dianma;
 
+/**
+ * Defines valid translation modes.
+ */
 public final class TranslateMode {
 
     /** Translation mode for conversion from Chinese characters to telegraph code. */
