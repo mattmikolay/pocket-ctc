@@ -34,6 +34,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Allows the user to input Chinese characters for translation into telegraphy codes, and
  * vice-versa.
@@ -50,7 +53,7 @@ public class TranslateActivity extends AppCompatActivity
 
     /**
      * Received by this activity's handler when a translated text is returned by
-     * {@link TranslatorThread}.
+     * {@link TranslateRunnable}.
      */
     public static final int MSG_TRANSLATE_SUCCESS = 2;
 
@@ -60,11 +63,13 @@ public class TranslateActivity extends AppCompatActivity
     private static final String STATE_TRANSLATE_MODE = "translateMode";
 
     private int mTranslateMode;
+    private boolean mUseTraditional;
 
     private EditText mInputText;
     private TextView mOutputText;
     private Handler mHandler;
-    private TranslatorThread mTranslator;
+    private CodeDictionary mDictionary;
+    private ExecutorService mExecutor;
 
     private final TextWatcher mInputWatcher = new TextWatcher() {
 
@@ -102,6 +107,10 @@ public class TranslateActivity extends AppCompatActivity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(myToolbar);
 
+        // Set up dictionary used for translation
+        mDictionary = new CodeDictionary(getResources());
+        mDictionary.loadAllData();
+
         // Add a TextWatcher to this Activity's main EditText, allowing us to detect when the user
         // stops typing
         mInputText = (EditText) findViewById(R.id.txt_input);
@@ -118,7 +127,7 @@ public class TranslateActivity extends AppCompatActivity
 
                     case MSG_REQUEST_TRANSLATION: {
                         String text = (String) msg.obj;
-                        mTranslator.requestTranslation(text);
+                        requestTranslation(text);
                         break;
                     }
 
@@ -150,16 +159,15 @@ public class TranslateActivity extends AppCompatActivity
 
         }
 
+        // Default to simplified characters. The user's preference will be checked in onResume.
+        mUseTraditional = false;
+
+        mExecutor = Executors.newSingleThreadExecutor();
+
         SwitcherView modeSwitcher = (SwitcherView) findViewById(R.id.langset_toolbar);
         modeSwitcher.setOnModeChangeListener(this);
         modeSwitcher.setTranslateMode(mTranslateMode);
         refreshInputTextHints();
-
-        // Start the TranslatorThread to perform translation in the background
-        mTranslator = new TranslatorThread(mHandler, getResources());
-        mTranslator.setTranslateMode(mTranslateMode);
-        mTranslator.setTraditionalEnabled(false);
-        mTranslator.start();
 
         // If the user is sharing into this app, load the EditText with the shared text. Translation
         // will be triggered by the registered TextWatcher.
@@ -215,17 +223,17 @@ public class TranslateActivity extends AppCompatActivity
         if("zh-Hans".equals(language)) {
 
             Log.d(TAG, "Simplified character set will be used for translation.");
-            mTranslator.setTraditionalEnabled(false);
+            mUseTraditional = false;
 
         } else if("zh-Hant".equals(language)) {
 
             Log.d(TAG, "Traditional character set will be used for translation.");
-            mTranslator.setTraditionalEnabled(true);
+            mUseTraditional = true;
 
         } else {
 
             Log.d(TAG, "Invalid language specified. Defaulting to simplified.");
-            mTranslator.setTraditionalEnabled(false);
+            mUseTraditional = false;
 
         }
 
@@ -236,9 +244,8 @@ public class TranslateActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
 
-        // Interrupt TranslatorThread to safely shut it down
-        mTranslator.interrupt();
-
+        // This will interrupt any currently executing TranslateRunnables
+        mExecutor.shutdownNow();
         super.onDestroy();
 
     }
@@ -306,12 +313,23 @@ public class TranslateActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Submits a new {@link TranslateRunnable} for execution to translate the given text.
+     * @param inputText the given input text
+     */
+    private void requestTranslation(final String inputText) {
+
+        Runnable runnable = new TranslateRunnable(mHandler, mDictionary, inputText, mTranslateMode,
+                mUseTraditional);
+        mExecutor.submit(runnable);
+
+    }
+
     @Override
     public void onTranslateModeSwitched(int mode) {
 
         mTranslateMode = mode;
-        mTranslator.setTranslateMode(mTranslateMode);
-
+        requestTranslation(mInputText.getText().toString());
         refreshInputTextHints();
 
     }
