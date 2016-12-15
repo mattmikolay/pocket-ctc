@@ -18,6 +18,9 @@
  */
 package com.mattmik.dianma;
 
+import com.mattmik.dianma.tokenizer.CodepointTokenizer;
+import com.mattmik.dianma.tokenizer.Tokenizer;
+
 import org.junit.Test;
 
 import java.util.NoSuchElementException;

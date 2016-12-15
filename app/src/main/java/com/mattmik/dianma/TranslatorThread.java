@@ -23,6 +23,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.mattmik.dianma.tokenizer.CodepointTokenizer;
+import com.mattmik.dianma.tokenizer.NumberTokenizer;
+import com.mattmik.dianma.tokenizer.Tokenizer;
+
 import java.util.Locale;
 
 /**

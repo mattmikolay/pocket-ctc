@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pocket CTC.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.mattmik.dianma;
+package com.mattmik.dianma.tokenizer;
 
 /**
  * The Tokenizer interface defines signatures for methods guiding the tokenization of text strings.
