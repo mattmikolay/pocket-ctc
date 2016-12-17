@@ -16,10 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pocket CTC.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.mattmik.dianma;
-
-import com.mattmik.dianma.tokenizer.CodepointTokenizer;
-import com.mattmik.dianma.tokenizer.Tokenizer;
+package com.mattmik.dianma.tokenizer;
 
 import org.junit.Test;
 
