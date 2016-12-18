@@ -25,8 +25,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * CodeDictionary is used to convert from Chinese characters to Chinese telegraph code, and
@@ -34,28 +34,30 @@ import java.util.Map;
  * <p>
  * Before any conversion can be performed, the dictionary data must be loaded using the
  * {@link #loadAllData()} method.
+ * <p>
+ * This class is thread-safe.
  */
 public class CodeDictionary {
 
-    public static final String TAG = "CodeDictionary";
+    private static final String TAG = "CodeDictionary";
 
     private static final int DATA_SIMPLIFIED = R.raw.simplified_codes;
     private static final int DATA_TRADITIONAL = R.raw.traditional_codes;
 
-    private Resources mResources;
+    private final Resources mResources;
 
-    private boolean mIsSimplifiedLoaded;
-    private boolean mIsTraditionalLoaded;
+    private volatile boolean mIsSimplifiedLoaded;
+    private volatile boolean mIsTraditionalLoaded;
 
-    private CodeMap mSimplifiedMap;
-    private CodeMap mTraditionalMap;
+    private final CodeMap mSimplifiedMap;
+    private final CodeMap mTraditionalMap;
 
     /**
      * Constructs a CodeDictionary. Before any conversion can be performed, the returned instance
      * must be loaded using the {@link #loadAllData()} method.
      * @param resources application's package Resources
      */
-    public CodeDictionary(Resources resources) {
+    public CodeDictionary(final Resources resources) {
 
         mResources = resources;
 
@@ -71,7 +73,7 @@ public class CodeDictionary {
      * Loads all data needed to perform conversions between Chinese characters and telegraph code.
      * @return true if data is loaded successfully, false otherwise
      */
-    public boolean loadAllData() {
+    public synchronized boolean loadAllData() {
 
         if(!mIsSimplifiedLoaded)
             mIsSimplifiedLoaded = loadSimplifiedData();
@@ -97,7 +99,7 @@ public class CodeDictionary {
      * @param code a valid simplified Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
-    public Integer simplifiedToTelegraph(int code) {
+    public Integer simplifiedToTelegraph(final int code) {
 
         if(!mIsSimplifiedLoaded)
             throw new IllegalStateException("Simplified dictionary has not been loaded.");
@@ -112,7 +114,7 @@ public class CodeDictionary {
      * @param code a valid traditional Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
-    public Integer traditionalToTelegraph(int code) {
+    public Integer traditionalToTelegraph(final int code) {
 
         if(!mIsTraditionalLoaded)
             throw new IllegalStateException("Traditional dictionary has not been loaded.");
@@ -128,7 +130,7 @@ public class CodeDictionary {
      * @return the corresponding simplified Chinese character codepoint, or null if no
      *         corresponding codepoint is found
      */
-    public Integer telegraphToSimplified(int code) {
+    public Integer telegraphToSimplified(final int code) {
 
         if(!mIsSimplifiedLoaded)
             throw new IllegalStateException("Simplified dictionary has not been loaded.");
@@ -144,7 +146,7 @@ public class CodeDictionary {
      * @return the corresponding traditional Chinese character codepoint, or null if no
      *         corresponding codepoint is found
      */
-    public Integer telegraphToTraditional(int code) {
+    public Integer telegraphToTraditional(final int code) {
 
         if(!mIsTraditionalLoaded)
             throw new IllegalStateException("Traditional dictionary has not been loaded.");
@@ -286,17 +288,17 @@ public class CodeDictionary {
         private static int DEFAULT_CAPACITY = 9000;
 
         // Unicode codepoint is key, CTC code is value
-        private Map<Integer, Integer> mHanToTelegraph;
+        private final Map<Integer, Integer> mHanToTelegraph;
 
         // CTC code is key, Unicode codepoint is value
-        private Map<Integer, Integer> mTelegraphToHan;
+        private final Map<Integer, Integer> mTelegraphToHan;
 
         /**
          * Constructs an empty CodeMap.
          */
         public CodeMap() {
-            mHanToTelegraph = new HashMap<>(DEFAULT_CAPACITY);
-            mTelegraphToHan = new HashMap<>(DEFAULT_CAPACITY);
+            mHanToTelegraph = new ConcurrentHashMap<>(DEFAULT_CAPACITY);
+            mTelegraphToHan = new ConcurrentHashMap<>(DEFAULT_CAPACITY);
         }
 
         /**
