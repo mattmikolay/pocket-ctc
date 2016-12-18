@@ -285,7 +285,7 @@ public class CodeDictionary {
      */
     private static class CodeMap {
 
-        private static int DEFAULT_CAPACITY = 9000;
+        private static final int DEFAULT_CAPACITY = 9000;
 
         // Unicode codepoint is key, CTC code is value
         private final Map<Integer, Integer> mHanToTelegraph;
