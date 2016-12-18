@@ -218,23 +218,32 @@ public class TranslateActivity extends AppCompatActivity
 
         SharedPreferences userPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String language = userPrefs.getString(SettingsActivity.KEY_LANGUAGE, "");
+        final boolean needsRefresh;
 
         // Switch character set (simplified or traditional) based upon user's settings
         if("zh-Hans".equals(language)) {
 
             Log.d(TAG, "Simplified character set will be used for translation.");
+            needsRefresh = mUseTraditional;
             mUseTraditional = false;
 
         } else if("zh-Hant".equals(language)) {
 
             Log.d(TAG, "Traditional character set will be used for translation.");
+            needsRefresh = !mUseTraditional;
             mUseTraditional = true;
 
         } else {
 
             Log.d(TAG, "Invalid language specified. Defaulting to simplified.");
+            needsRefresh = !mUseTraditional;
             mUseTraditional = false;
 
+        }
+
+        if(needsRefresh) {
+            Log.d(TAG, "Refreshing translation due to character set preference change.");
+            requestTranslation(mInputText.getText().toString());
         }
 
         super.onResume();
