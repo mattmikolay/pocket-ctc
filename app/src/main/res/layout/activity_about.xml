@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_about_app_version"
                 android:layout_marginBottom="@dimen/about_text_spacing"
+                android:autoLink="web"
                 android:text="@string/app_copyright_info"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
