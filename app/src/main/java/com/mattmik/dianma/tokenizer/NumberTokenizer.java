@@ -72,12 +72,13 @@ public class NumberTokenizer implements Tokenizer {
                 return "";
             }
 
-            // Otherwise, return this single codepoint as a string
+            // Otherwise, return this single codepoint as a string.
+            // (But if this codepoint is whitespace, return the empty string.)
             if(mStartIndex == mStopIndex) {
                 mStopIndex += Character.charCount(codepoint);
                 String result = mInputText.substring(mStartIndex, mStopIndex);
                 mStartIndex = mStopIndex;
-                return result;
+                return (Character.isWhitespace(codepoint) ? "" : result);
             }
 
         }

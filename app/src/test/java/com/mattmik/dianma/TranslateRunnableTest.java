@@ -149,7 +149,7 @@ public class TranslateRunnableTest {
         verify(mHandler).obtainMessage(eq(TranslateActivity.MSG_TRANSLATE_SUCCESS),
                 mResultCaptor.capture());
         verify(mHandler).sendMessage(responseMessage);
-        assertEquals("H e l l o, w o r l d!", mResultCaptor.getValue());
+        assertEquals("Hello,world!", mResultCaptor.getValue());
 
     }
 
@@ -179,7 +179,7 @@ public class TranslateRunnableTest {
         verify(mHandler).obtainMessage(eq(TranslateActivity.MSG_TRANSLATE_SUCCESS),
                 mResultCaptor.capture());
         verify(mHandler).sendMessage(responseMessage);
-        assertEquals("H e l l o, w o r l d!", mResultCaptor.getValue());
+        assertEquals("Hello,world!", mResultCaptor.getValue());
 
     }
 
