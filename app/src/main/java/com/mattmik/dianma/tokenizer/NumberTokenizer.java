@@ -64,18 +64,23 @@ public class NumberTokenizer implements Tokenizer {
         // Process next character, if one is available
         if(mStopIndex < mInputText.length()) {
 
-            char c = mInputText.charAt(mStopIndex);
+            int codepoint = mInputText.codePointAt(mStopIndex);
 
             // If this is a number character, skip it for now. We will return it as a token later.
-            if(c >= '0' && c <= '9') {
+            if(codepoint >= '0' && codepoint <= '9') {
                 mStopIndex++;
                 return "";
             }
 
-        }
+            // Otherwise, return this single codepoint as a string
+            if(mStartIndex == mStopIndex) {
+                mStopIndex += Character.charCount(codepoint);
+                String result = mInputText.substring(mStartIndex, mStopIndex);
+                mStartIndex = mStopIndex;
+                return result;
+            }
 
-        if(mStartIndex == mStopIndex)
-            return mInputText.substring(mStartIndex++, ++mStopIndex);
+        }
 
         String result = mInputText.substring(mStartIndex, mStopIndex);
         mStartIndex = mStopIndex;
