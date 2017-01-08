@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Matthew Mikolay
+ * Copyright (c) 2016-2017 Matthew Mikolay
  *
  * This file is part of Pocket CTC.
  *
