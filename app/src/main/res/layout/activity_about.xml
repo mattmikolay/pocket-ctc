@@ -51,16 +51,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_about_app_version"
-                android:layout_marginBottom="@dimen/about_text_spacing"
-                android:autoLink="web"
                 android:text="@string/app_copyright_info"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/txt_about_github_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_about_app_copyright"
+                android:layout_marginBottom="@dimen/about_text_spacing"
+                android:clickable="true"
+                android:text="@string/app_github_short_url"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
                 android:id="@+id/txt_about_gnu_notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txt_about_app_copyright"
+                android:layout_below="@id/txt_about_github_url"
                 android:layout_marginBottom="@dimen/about_text_spacing"
                 android:text="@string/app_gnu_notice"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

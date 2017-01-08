@@ -29,4 +29,9 @@ public final class AnalyticsEvents {
      */
     public static final String TEXT_FROM_INTENT = "text_from_intent";
 
+    /**
+     * Event recorded when the user clicks a link to view Pocket CTC's GitHub page.
+     */
+    public static final String VIEW_GITHUB_PAGE = "view_github_page";
+
 }
