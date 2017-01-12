@@ -18,23 +18,58 @@
  */
 package com.mattmik.dianma;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Wraps {@link SettingsFragment} for display in an Activity.
  */
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String TAG = "SettingsActivity";
+
     public static final String KEY_LANGUAGE = "pref_language";
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+    private SharedPreferences mUserPrefs;
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+            if(KEY_LANGUAGE.equals(key)) {
+
+                Log.d(TAG, "Character set preference changed.");
+
+                // Record a metric for this character set change
+                final Bundle params = new Bundle();
+                final String charSet = sharedPreferences.getString(key, "");
+                params.putString(AnalyticsParams.CHARACTER_SET, charSet);
+                mFirebaseAnalytics.logEvent(AnalyticsEvents.CHANGE_HAN_SET, params);
+
+            }
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // Set up app bar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.settings_toolbar);
@@ -44,11 +79,25 @@ public class SettingsActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        mUserPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         // Show SettingsFragment as primary content
         getFragmentManager().beginTransaction()
                 .replace(R.id.settings_container, new SettingsFragment())
                 .commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mUserPrefs.registerOnSharedPreferenceChangeListener(mPrefChangeListener);
+    }
+
+    @Override
+    protected void onPause() {
+        mUserPrefs.unregisterOnSharedPreferenceChangeListener(mPrefChangeListener);
+        super.onPause();
     }
 
 }

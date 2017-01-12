@@ -19,24 +19,13 @@
 package com.mattmik.dianma;
 
 /**
- * Defines event names used for logging via Firebase Analytics.
+ * Defines parameter names used for logging events via Firebase Analytics.
  */
-public final class AnalyticsEvents {
+public class AnalyticsParams {
 
     /**
-     * Event recorded when the text to be translated was received in an Intent. For example, when
-     * the user shares text into the app.
+     * Parameter corresponding to the user's selected character set (simplified or traditional).
      */
-    public static final String TEXT_FROM_INTENT = "text_from_intent";
-
-    /**
-     * Event recorded when the user clicks a link to view Pocket CTC's GitHub page.
-     */
-    public static final String VIEW_GITHUB_PAGE = "view_github_page";
-
-    /**
-     * Event recorded when the user changes the preferred character set (simplified or traditional).
-     */
-    public static final String CHANGE_HAN_SET = "change_han_set";
+    public static final String CHARACTER_SET = "character_set";
 
 }
