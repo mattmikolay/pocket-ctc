@@ -34,8 +34,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,8 +61,6 @@ public class TranslateActivity extends AppCompatActivity
 
     private static final String STATE_INPUT_TEXT = "inputText";
     private static final String STATE_TRANSLATE_MODE = "translateMode";
-
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     private int mTranslateMode;
     private boolean mUseTraditional;
@@ -106,8 +102,6 @@ public class TranslateActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // Set up app bar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -301,12 +295,8 @@ public class TranslateActivity extends AppCompatActivity
         String action = intent.getAction();
         String type = intent.getType();
         if(Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
-
-            mFirebaseAnalytics.logEvent(AnalyticsEvents.TEXT_FROM_INTENT, null);
-
             String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
             mInputText.setText(sharedText);
-
         }
 
     }
