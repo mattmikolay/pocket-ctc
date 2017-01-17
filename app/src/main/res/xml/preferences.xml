@@ -18,4 +18,13 @@
 
     </Preference>
 
+    <Preference android:title="@string/title_privacy">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.mattmik.dianma.PrivacyActivity"
+            android:targetPackage="com.mattmik.dianma" />
+
+    </Preference>
+
 </PreferenceScreen>

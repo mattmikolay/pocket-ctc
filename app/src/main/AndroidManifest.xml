@@ -35,6 +35,11 @@
             android:label="@string/title_about"
             android:parentActivityName=".SettingsActivity" />
 
+        <activity
+            android:name=".PrivacyActivity"
+            android:label="@string/title_privacy"
+            android:parentActivityName=".SettingsActivity" />
+
     </application>
 
 </manifest>
