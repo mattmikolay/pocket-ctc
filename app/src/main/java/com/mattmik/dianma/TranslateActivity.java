@@ -18,6 +18,7 @@
  */
 package com.mattmik.dianma;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,7 +61,7 @@ public class TranslateActivity extends AppCompatActivity
     private static final int UPDATE_DELAY = 200;
 
     private static final String STATE_INPUT_TEXT = "inputText";
-    private static final String STATE_TRANSLATE_MODE = "translateMode";
+    private static final String KEY_TRANSLATE_MODE = "translateMode";
 
     private int mTranslateMode;
     private boolean mUseTraditional;
@@ -147,17 +148,9 @@ public class TranslateActivity extends AppCompatActivity
 
         };
 
-        // Default to conversion from Chinese characters to telegraph code, but restore previous
-        // translation mode if needed
-        mTranslateMode = TranslateMode.HAN_TO_TELE;
-        if(savedInstanceState != null) {
-
-            Log.d(TAG, "Restoring translation mode from activity recreation.");
-
-            mTranslateMode = savedInstanceState.getInt(STATE_TRANSLATE_MODE,
-                    TranslateMode.HAN_TO_TELE);
-
-        }
+        // Restore the last used translation mode, defaulting to HAN_TO_TELE
+        SharedPreferences sharedPrefs = getPreferences(Context.MODE_PRIVATE);
+        mTranslateMode = sharedPrefs.getInt(KEY_TRANSLATE_MODE, TranslateMode.HAN_TO_TELE);
 
         // Default to simplified characters. The user's preference will be checked in onResume.
         mUseTraditional = false;
@@ -205,9 +198,6 @@ public class TranslateActivity extends AppCompatActivity
 
         // Save input text specified by user
         savedInstanceState.putString(STATE_INPUT_TEXT, mInputText.getText().toString());
-
-        // Save current translation mode
-        savedInstanceState.putInt(STATE_TRANSLATE_MODE, mTranslateMode);
 
         super.onSaveInstanceState(savedInstanceState);
 
@@ -338,6 +328,13 @@ public class TranslateActivity extends AppCompatActivity
     public void onTranslateModeSwitched(int mode) {
 
         mTranslateMode = mode;
+
+        // Save the selected mode to SharedPreferences so it persists across user sessions
+        SharedPreferences sharedPrefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putInt(KEY_TRANSLATE_MODE, mTranslateMode);
+        editor.apply();
+
         requestTranslation(mInputText.getText().toString());
         refreshInputTextHints();
 
