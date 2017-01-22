@@ -22,9 +22,7 @@
 
     <string name="app_copyright_info" translatable="false">
     Copyright 2016 Matthew Mikolay.
-    All rights reserved.
-
-    github.com/mattmikolay/pocket-ctc
+    All rights reserved.\ngithub.com/mattmikolay/pocket-ctc
     </string>
 
     <string name="about_version" translatable="false">Version %1$s</string>
