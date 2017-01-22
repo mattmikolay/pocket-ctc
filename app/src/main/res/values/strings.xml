@@ -50,6 +50,10 @@
     &lt;http://www.gnu.org/licenses/&gt;.
     </string>
 
+    <string name="app_terms_info" translatable="false">For full terms and
+    conditions, please see the full text of the GNU General Public License v3.0
+    at gnu.org/licenses/gpl.html</string>
+
     <string name="app_unicode_license" translatable="false">
     COPYRIGHT AND PERMISSION NOTICE\n\nCopyright \u00A9 1991-2016 Unicode, Inc.
     All rights reserved.\nDistributed under the Terms of Use in

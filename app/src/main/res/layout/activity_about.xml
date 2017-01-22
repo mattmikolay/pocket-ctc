@@ -76,10 +76,20 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
-                android:id="@+id/txt_about_unicode_notice"
+                android:id="@+id/txt_about_terms_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_about_gnu_license"
+                android:layout_marginBottom="@dimen/about_text_spacing"
+                android:autoLink="web"
+                android:text="@string/app_terms_info"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/txt_about_unicode_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_about_terms_info"
                 android:layout_marginBottom="@dimen/about_text_spacing"
                 android:text="@string/app_unicode_notice"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
