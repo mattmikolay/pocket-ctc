@@ -44,6 +44,17 @@ public class TranslateRunnable implements Runnable {
     private final int mTranslateMode;
     private final boolean mUseTraditional;
 
+    /**
+     * Constructs a new TranslateRunnable.
+     *
+     * @param responseHandler the Handler that will receive the result
+     * @param dictionary      the CodeDictionary used for translation
+     * @param inputText       the input string to be translated
+     * @param translateMode   the translation mode. See {@link TranslateMode}.
+     * @param useTraditional  true if translation should use traditional
+     *                        characters, false if translation should use
+     *                        simplified characters
+     */
     public TranslateRunnable(Handler responseHandler, CodeDictionary dictionary, String inputText,
                              int translateMode, boolean useTraditional) {
         mResponseHandler = responseHandler;
