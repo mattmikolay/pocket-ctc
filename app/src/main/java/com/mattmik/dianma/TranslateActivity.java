@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -75,12 +77,12 @@ public class TranslateActivity extends AppCompatActivity
     private final TextWatcher mInputWatcher = new TextWatcher() {
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        public void beforeTextChanged(@Nullable CharSequence s, int start, int count, int after) {
             // Empty!
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
 
             // Remove any pending requests for translation, as they are now out of date
             mHandler.removeMessages(MSG_REQUEST_TRANSLATION);
@@ -92,14 +94,14 @@ public class TranslateActivity extends AppCompatActivity
         }
 
         @Override
-        public void afterTextChanged(Editable editable) {
+        public void afterTextChanged(@Nullable Editable editable) {
             // Empty!
         }
 
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
@@ -170,7 +172,7 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@Nullable Intent intent) {
 
         // Launch mode is singleTask, so Intent containing shared text will be passed to this method
         // if TranslateActivity already exists at time of share.
@@ -180,7 +182,7 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
 
         super.onRestoreInstanceState(savedInstanceState);
 
@@ -194,7 +196,7 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
 
         // Save input text specified by user
         savedInstanceState.putString(STATE_INPUT_TEXT, mInputText.getText().toString());
@@ -250,7 +252,7 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -258,7 +260,7 @@ public class TranslateActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
 
@@ -277,7 +279,7 @@ public class TranslateActivity extends AppCompatActivity
      * Loads input text optionally stored in the given Intent.
      * @param intent a given Intent
      */
-    private void loadInputTextFromIntent(Intent intent) {
+    private void loadInputTextFromIntent(@Nullable Intent intent) {
 
         if(intent == null)
             return;
@@ -316,7 +318,7 @@ public class TranslateActivity extends AppCompatActivity
      * Submits a new {@link TranslateRunnable} for execution to translate the given text.
      * @param inputText the given input text
      */
-    private void requestTranslation(final String inputText) {
+    private void requestTranslation(@NonNull final String inputText) {
 
         Runnable runnable = new TranslateRunnable(mHandler, mDictionary, inputText, mTranslateMode,
                 mUseTraditional);

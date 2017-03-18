@@ -18,6 +18,8 @@
  */
 package com.mattmik.dianma.tokenizer;
 
+import android.support.annotation.NonNull;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -35,11 +37,12 @@ public class CodepointTokenizer implements Tokenizer {
      * Constructs a new CodepointTokenizer instance.
      * @param inputText the text to be tokenized
      */
-    public CodepointTokenizer(String inputText) {
+    public CodepointTokenizer(@NonNull String inputText) {
         mInputText = inputText;
         mCurrIndex = 0;
     }
 
+    @NonNull
     @Override
     public String getInput() {
         return mInputText;
@@ -50,6 +53,7 @@ public class CodepointTokenizer implements Tokenizer {
         return (mCurrIndex < mInputText.length());
     }
 
+    @NonNull
     @Override
     public Object nextToken() {
 

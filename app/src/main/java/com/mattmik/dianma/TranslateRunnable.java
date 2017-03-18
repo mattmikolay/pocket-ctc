@@ -20,6 +20,7 @@ package com.mattmik.dianma;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.mattmik.dianma.tokenizer.CodepointTokenizer;
@@ -55,8 +56,8 @@ public class TranslateRunnable implements Runnable {
      *                        characters, false if translation should use
      *                        simplified characters
      */
-    public TranslateRunnable(Handler responseHandler, CodeDictionary dictionary, String inputText,
-                             int translateMode, boolean useTraditional) {
+    public TranslateRunnable(@NonNull Handler responseHandler, @NonNull CodeDictionary dictionary,
+                             @NonNull String inputText, int translateMode, boolean useTraditional) {
         mResponseHandler = responseHandler;
         mDictionary = dictionary;
         mInputText = inputText;
@@ -81,6 +82,7 @@ public class TranslateRunnable implements Runnable {
      * Creates a tokenizer for the given input text and translation mode.
      * @return a Tokenizer
      */
+    @NonNull
     private Tokenizer makeTokenizer() {
 
         final Tokenizer tokenizer;
@@ -108,7 +110,8 @@ public class TranslateRunnable implements Runnable {
      * Performs a single unit of translation work. If translation has already finished, this is a
      * no-op.
      */
-    private void stepTranslation(final Tokenizer tokenizer, final StringBuilder resultBuilder) {
+    private void stepTranslation(@NonNull final Tokenizer tokenizer,
+                                 @NonNull final StringBuilder resultBuilder) {
 
         if(!tokenizer.hasMoreTokens())
             return;
@@ -133,7 +136,8 @@ public class TranslateRunnable implements Runnable {
     /**
      * Steps conversion of a string of Chinese characters into telegraph code.
      */
-    private void stepHanToTele(final Tokenizer tokenizer, final StringBuilder resultBuilder) {
+    private void stepHanToTele(@NonNull final Tokenizer tokenizer,
+                               @NonNull final StringBuilder resultBuilder) {
 
         int codepoint = (Integer) tokenizer.nextToken();
 
@@ -159,7 +163,8 @@ public class TranslateRunnable implements Runnable {
     /**
      * Steps conversion of a string of telegraph codes into Chinese characters.
      */
-    private void stepTeleToHan(final Tokenizer tokenizer, final StringBuilder resultBuilder) {
+    private void stepTeleToHan(@NonNull final Tokenizer tokenizer,
+                               @NonNull final StringBuilder resultBuilder) {
 
         String token = (String) tokenizer.nextToken();
 
@@ -195,7 +200,7 @@ public class TranslateRunnable implements Runnable {
     /**
      * Sends the translated result text to the main thread using the response handler.
      */
-    private void sendResult(final StringBuilder resultBuilder) {
+    private void sendResult(@NonNull final StringBuilder resultBuilder) {
 
         Log.d(TAG, "Sending translated text to response handler.");
 

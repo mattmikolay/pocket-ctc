@@ -19,6 +19,8 @@
 package com.mattmik.dianma;
 
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -57,7 +59,7 @@ public class CodeDictionary {
      * must be loaded using the {@link #loadAllData()} method.
      * @param resources application's package Resources
      */
-    public CodeDictionary(final Resources resources) {
+    public CodeDictionary(@NonNull final Resources resources) {
 
         mResources = resources;
 
@@ -99,6 +101,7 @@ public class CodeDictionary {
      * @param code a valid simplified Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
+    @Nullable
     public Integer simplifiedToTelegraph(final int code) {
 
         if(!mIsSimplifiedLoaded)
@@ -114,6 +117,7 @@ public class CodeDictionary {
      * @param code a valid traditional Chinese character codepoint
      * @return the corresponding telegraph code, or null if no corresponding telegraph code is found
      */
+    @Nullable
     public Integer traditionalToTelegraph(final int code) {
 
         if(!mIsTraditionalLoaded)
@@ -130,6 +134,7 @@ public class CodeDictionary {
      * @return the corresponding simplified Chinese character codepoint, or null if no
      *         corresponding codepoint is found
      */
+    @Nullable
     public Integer telegraphToSimplified(final int code) {
 
         if(!mIsSimplifiedLoaded)
@@ -146,6 +151,7 @@ public class CodeDictionary {
      * @return the corresponding traditional Chinese character codepoint, or null if no
      *         corresponding codepoint is found
      */
+    @Nullable
     public Integer telegraphToTraditional(final int code) {
 
         if(!mIsTraditionalLoaded)
@@ -268,7 +274,7 @@ public class CodeDictionary {
      * @param input a string of the form "U+XXXX", where XXXX is a hexadecimal substring
      * @return the corresponding integer representation, or -1 if input is invalid
      */
-    private static int parseUnicodeCodepoint(String input) {
+    private static int parseUnicodeCodepoint(@Nullable String input) {
 
         if(input == null || input.isEmpty())
             return -1;
@@ -319,6 +325,7 @@ public class CodeDictionary {
          * @param han a Chinese character Unicode codepoint
          * @return the corresponding Chinese telegraph code
          */
+        @Nullable
         public Integer hanToTelegraph(int han) {
             return mHanToTelegraph.get(han);
         }
@@ -329,6 +336,7 @@ public class CodeDictionary {
          * @param telegraph a Chinese telegraph code
          * @return the corresponding Chinese character Unicode codepoint
          */
+        @Nullable
         public Integer telegraphToHan(int telegraph) {
             return mTelegraphToHan.get(telegraph);
         }

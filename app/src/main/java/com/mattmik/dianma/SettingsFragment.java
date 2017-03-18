@@ -20,6 +20,7 @@ package com.mattmik.dianma;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.Nullable;
 
 /**
  * Allows the user to select Chinese character set (simplified or traditional) and view information
@@ -28,7 +29,7 @@ import android.preference.PreferenceFragment;
 public class SettingsFragment extends PreferenceFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 

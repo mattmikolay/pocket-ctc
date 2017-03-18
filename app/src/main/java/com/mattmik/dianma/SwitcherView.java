@@ -21,6 +21,8 @@ package com.mattmik.dianma;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,7 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * Constructs a new SwitcherView.
      * @param context context in which this view is running
      */
-    public SwitcherView(Context context) {
+    public SwitcherView(@NonNull Context context) {
         super(context);
         init(context);
     }
@@ -57,7 +59,7 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * @param context context in which this view is running
      * @param attrs attributes of inflating XML tag
      */
-    public SwitcherView(Context context, AttributeSet attrs) {
+    public SwitcherView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -68,7 +70,7 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * @param attrs attributes of inflating XML tag
      * @param defStyleAttr style attribute
      */
-    public SwitcherView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SwitcherView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -81,7 +83,8 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * @param defStyleRes style resource
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SwitcherView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SwitcherView(@NonNull Context context, AttributeSet attrs, int defStyleAttr,
+                        int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
@@ -91,7 +94,7 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * view's layout and set up any child views.
      * @param context context in which this view is running
      */
-    private void init(Context context) {
+    private void init(@NonNull Context context) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View parent = inflater.inflate(R.layout.toolbar_switcher, this, true);
@@ -150,12 +153,12 @@ public class SwitcherView extends RelativeLayout implements View.OnClickListener
      * Sets the listener that will be notified when the translation mode changes.
      * @param listener an OnTranslateModeSwitchListener
      */
-    public void setOnModeChangeListener(OnTranslateModeSwitchListener listener) {
+    public void setOnModeChangeListener(@Nullable OnTranslateModeSwitchListener listener) {
         mListener = listener;
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(@Nullable View view) {
 
         // Switch to the opposite translate mode
         mTranslateMode = (mTranslateMode == TranslateMode.HAN_TO_TELE) ?

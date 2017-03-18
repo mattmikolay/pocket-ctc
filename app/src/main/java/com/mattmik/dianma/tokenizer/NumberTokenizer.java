@@ -18,6 +18,8 @@
  */
 package com.mattmik.dianma.tokenizer;
 
+import android.support.annotation.NonNull;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -39,12 +41,13 @@ public class NumberTokenizer implements Tokenizer {
      * Constructs a new NumberTokenizer instance.
      * @param inputText the text to be tokenized
      */
-    public NumberTokenizer(String inputText) {
+    public NumberTokenizer(@NonNull String inputText) {
         mInputText = inputText;
         mStartIndex = 0;
         mStopIndex = 0;
     }
 
+    @NonNull
     @Override
     public String getInput() {
         return mInputText;
@@ -55,6 +58,7 @@ public class NumberTokenizer implements Tokenizer {
         return (mStartIndex != mStopIndex || mStopIndex < mInputText.length());
     }
 
+    @NonNull
     @Override
     public Object nextToken() {
 
