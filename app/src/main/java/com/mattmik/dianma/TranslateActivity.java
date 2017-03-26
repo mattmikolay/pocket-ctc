@@ -320,6 +320,10 @@ public class TranslateActivity extends AppCompatActivity
      */
     private void requestTranslation(@NonNull final String inputText) {
 
+        // Ignore translation requests if the app is shutting down
+        if(mExecutor.isShutdown())
+            return;
+
         Runnable runnable = new TranslateRunnable(mHandler, mDictionary, inputText, mTranslateMode,
                 mUseTraditional);
         mExecutor.submit(runnable);
